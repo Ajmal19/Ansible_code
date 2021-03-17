@@ -1,0 +1,26 @@
+---
+- hosts: node1
+  tasks: 
+  - name:
+    file:
+      path: "/dvd"
+      state: directory 
+  - name: "mounting /dev/cdrom to /dvd"
+    mount:
+      src: "/dev/cdrom"
+      path: "/dvd"
+      fstype: iso9660
+      state: mounted
+  - name: "Creating Appstream repo"
+    yum_repository:
+      name: "AppStream"
+      description: "Repo for Appstream"
+      gpgcheck: no
+      basurl: "/dvd/AppStream"
+
+  - name: "Creating BaseOS repo"
+    yum_repository:
+      name: "BaseOS"
+      description: "Repo for BaseOS"
+      gpgcheck: no
+      basurl: "/dvd/BaseOS"

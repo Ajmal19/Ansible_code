@@ -1,0 +1,11 @@
+---
+- hosts: node1
+  tasks:
+  - name: "Installing web server"
+    package:
+      name: "httpd"
+      state: present
+  - name: "Copying web pages"
+    copy: 
+      dest: "/var/www/html/index.html"
+      content: "wow"

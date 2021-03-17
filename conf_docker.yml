@@ -1,0 +1,34 @@
+---
+- hosts: node1
+  tasks:
+  - name: Adding docker repo
+    yum_repository:
+      name: docker-repo
+      description: Repo fot docker
+      file: external_repos
+      baseurl: https://download.docker.com/linux/centos/7/x86_64/stable/
+      gpgcheck: no
+  - name: "Installing docker-ce"
+    command:
+      cmd: "yum install docker-ce --nobest -y"  
+  - name: "Starting docker-ce service"
+    service:
+      name: "docker"
+      state: restarted
+  - name: "Installing SDK for docker(docker-py)" 
+    pip:
+      name: "docker-py" 
+      state: present  
+  - name: "Pulling centos image"
+    docker_image:
+      name: "centos"
+      state: present
+      pull: "yes"
+  - name: "Provisioning a centos container"
+    docker_container:
+      name: "test"
+      image: "centos"
+      detach: yes
+      tty: yes
+      ports:
+         - 80
